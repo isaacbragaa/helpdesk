@@ -1,0 +1,27 @@
+app = "supti"
+primary_region = "gru"  # São Paulo
+
+[build]
+
+# ATENÇÃO: este arquivo é commitado no git. NUNCA coloque ADMIN_PASSWORD_HASH,
+# ADMIN_SALT ou tokens aqui. Para segredos, use:  fly secrets set CHAVE=valor
+[env]
+  DB_PATH = "/data/tickets.db"
+
+[[mounts]]
+  source = "chamados_data"
+  destination = "/data"
+
+[http_service]
+  internal_port = 8501
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  # 0 = a máquina desliga quando ninguém acessa e liga sozinha no próximo acesso
+  # (custo bem menor; o primeiro acesso após ociosidade demora alguns segundos a mais)
+  min_machines_running = 0
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
